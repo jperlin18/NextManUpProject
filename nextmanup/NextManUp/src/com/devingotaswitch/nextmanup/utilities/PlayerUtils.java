@@ -1,6 +1,7 @@
 package com.devingotaswitch.nextmanup.utilities;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class PlayerUtils {
@@ -19,7 +20,7 @@ public class PlayerUtils {
 	/**
 	 * Populates the fix hashes for team names
 	 */
-	public static void handleHashes()
+	private static void handleHashes()
 	{
 		teams.clear();
 		teams.put("cin", "Cincinnati Bengals");
@@ -146,5 +147,68 @@ public class PlayerUtils {
 		teams.put("arizona", "Arizona Cardinals");
 		teams.put("cardinals", "Arizona Cardinals");
 	}
-
+	
+	
+	/**
+	 * This adjusts teams to a standard value
+	 * @param team the team to check
+	 * @return the possibly adjusted team string
+	 */
+	public static String fixTeams(String team)
+	{
+		String low = team.toLowerCase().replaceAll("[^\\x20-\\x7e]","");
+		if(low.split(" ").length > 1 && (low.split(" ")[1].equals("p") || low.split(" ")[1].equals("q")))
+		{
+			low = low.split(" ")[0];
+		}
+		if(teams.containsKey(low))
+		{
+			return teams.get(low);
+		}
+		else if(low.contains("kansas"))
+		{
+			return "Kansas City Chiefs";
+		}
+		else if(low.contains("diego"))
+		{
+			return "San Diego Chargers";
+		}
+		else if(low.contains("green"))
+		{ 
+			return "Green Bay Packers";
+		}
+		else if(low.contains("tampa"))
+		{
+			return "Tampa Bay Buccaneers";
+		}
+		else if(low.contains("orleans"))
+		{
+			return "New Orleans Saints";
+		}
+		else if(low.contains("louis"))
+		{
+			return "St. Louis Rams";
+		}
+		else if(low.contains("francisco"))
+		{
+			return "San Francisco 49ers";
+		}
+		else if(low.contains("england"))
+		{
+			return "New England Patriots";
+		}
+		else if(low.contains("nyj"))
+		{
+			return "New York Jets";
+		}
+		else if(low.contains("tb"))
+		{
+			return "Tampa Bay Buccaneers";
+		}
+		else if(low.contains("mia"))
+		{
+			return "Miami Dolphins";
+		}
+		return team;
+	}
 }
