@@ -95,12 +95,13 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080000;
+        public static final int AppBaseTheme=0x7f080001;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f080001;
-        public static final int MyActionBar=0x7f080002;
-        public static final int MyTheme_ActionBar_TitleTextStyle=0x7f080003;
+        public static final int AppTheme=0x7f080002;
+        public static final int ButtonText=0x7f080000;
+        public static final int MyActionBar=0x7f080003;
+        public static final int MyTheme_ActionBar_TitleTextStyle=0x7f080004;
     }
 }
