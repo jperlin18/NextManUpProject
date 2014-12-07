@@ -22,17 +22,6 @@ public class Player {
 		this.position = position;
 	}
 	
-	/**
-	 * Player name with team appended is a unique way to 
-	 * identify a player (i.e. there were two Steve Smith's 
-	 * who played WR recently)
-	 * 
-	 * @return name.team
-	 */
-	public String getIdentifier(){
-		return name + "." + team;
-	}
-	
 	public String getName(){
 		return name;
 	}
@@ -44,4 +33,16 @@ public class Player {
 	public String getPosition(){
 		return position;
 	}
+	
+	/**
+	 * Player name with team appended is a unique way to 
+	 * identify a player (i.e. there were two Steve Smith's 
+	 * who played WR recently)
+	 * 
+	 * @return name.team
+	 */
+	public String getIdentifier(){
+		return name + "." + team;
+	}
+	
 }
