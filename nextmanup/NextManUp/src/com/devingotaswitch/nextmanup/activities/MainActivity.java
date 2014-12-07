@@ -1,5 +1,9 @@
-package com.devingotaswitch.nextmanup;
+package com.devingotaswitch.nextmanup.activities;
 
+import com.devingotaswitch.nextmanup.R;
+import com.devingotaswitch.nextmanup.R.id;
+import com.devingotaswitch.nextmanup.R.layout;
+import com.devingotaswitch.nextmanup.R.menu;
 import com.devspark.sidenavigation.ISideNavigationCallback;
 import com.devspark.sidenavigation.SideNavigationView;
 
