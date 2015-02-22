@@ -12,9 +12,11 @@ public class PlayerUtils {
 	 * Does some initial set up. Call this before using a util 
 	 * method.
 	 */
-	public static void init(){
-		teams = new HashMap<String, String>();
-		handleHashes();
+	private static void init(){
+		if(teams == null || teams.size() > 0){
+			teams = new HashMap<String, String>();
+			handleHashes();
+		}
 	}
 	
 	/**
@@ -154,59 +156,47 @@ public class PlayerUtils {
 	 * @param team the team to check
 	 * @return the possibly adjusted team string
 	 */
-	public static String fixTeams(String team)
-	{
+	public static String fixTeams(String team) {
+		init();
 		String low = team.toLowerCase().replaceAll("[^\\x20-\\x7e]","");
-		if(low.split(" ").length > 1 && (low.split(" ")[1].equals("p") || low.split(" ")[1].equals("q")))
-		{
+		if(low.split(" ").length > 1 && (low.split(" ")[1].equals("p") 
+				|| low.split(" ")[1].equals("q"))) {
 			low = low.split(" ")[0];
 		}
-		if(teams.containsKey(low))
-		{
+		if(teams.containsKey(low)) {
 			return teams.get(low);
 		}
-		else if(low.contains("kansas"))
-		{
+		else if(low.contains("kansas")){
 			return "Kansas City Chiefs";
 		}
-		else if(low.contains("diego"))
-		{
+		else if(low.contains("diego")) {
 			return "San Diego Chargers";
 		}
-		else if(low.contains("green"))
-		{ 
+		else if(low.contains("green")) { 
 			return "Green Bay Packers";
 		}
-		else if(low.contains("tampa"))
-		{
+		else if(low.contains("tampa")) {
 			return "Tampa Bay Buccaneers";
 		}
-		else if(low.contains("orleans"))
-		{
+		else if(low.contains("orleans")) {
 			return "New Orleans Saints";
 		}
-		else if(low.contains("louis"))
-		{
+		else if(low.contains("louis")) {
 			return "St. Louis Rams";
 		}
-		else if(low.contains("francisco"))
-		{
+		else if(low.contains("francisco")) {
 			return "San Francisco 49ers";
 		}
-		else if(low.contains("england"))
-		{
+		else if(low.contains("england")) {
 			return "New England Patriots";
 		}
-		else if(low.contains("nyj"))
-		{
+		else if(low.contains("nyj")) {
 			return "New York Jets";
 		}
-		else if(low.contains("tb"))
-		{
+		else if(low.contains("tb")) {
 			return "Tampa Bay Buccaneers";
 		}
-		else if(low.contains("mia"))
-		{
+		else if(low.contains("mia")) {
 			return "Miami Dolphins";
 		}
 		return team;
