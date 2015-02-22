@@ -2,47 +2,39 @@ package com.devingotaswitch.nextmanup.specifics;
 
 public class Player {
 	
-	private final String name;
-	private final String team;
-	private final String position;
+	private String name;
+	private String position;
 	
-	/**
-	 * Not entirely sure if this will be necessary, 
-	 * but it could be internally
-	 */
-	public Player() {
-		name = "unknown";
-		team = "unknown";
-		position = "unknown";
-	}
+	private int teamId;
+	private int playerId;
+	private int age;
 
-	public Player(String name, String team, String position) {
+	public Player(String name, int teamId, int playerId, String position, int age) {
 		this.name = name;
-		this.team = team;
+		this.teamId = teamId;
 		this.position = position;
+		this.playerId = playerId;
+		this.age = age;
 	}
 	
 	public String getName(){
 		return name;
 	}
 	
-	public String getTeam(){
-		return team;
+	public int getTeamId(){
+		return teamId;
+	}
+	
+	public int getPlayerId() {
+		return playerId;
+	}
+	
+	public int getAge(){
+		return age;
 	}
 	
 	public String getPosition(){
 		return position;
-	}
-	
-	/**
-	 * Player name with team appended is a unique way to 
-	 * identify a player (i.e. there were two Steve Smith's 
-	 * who played WR recently)
-	 * 
-	 * @return name.team
-	 */
-	public String getIdentifier(){
-		return name + "." + team;
 	}
 	
 }
