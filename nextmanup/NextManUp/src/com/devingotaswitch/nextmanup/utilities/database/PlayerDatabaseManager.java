@@ -1,6 +1,12 @@
 package com.devingotaswitch.nextmanup.utilities.database;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.devingotaswitch.nextmanup.specifics.Team;
+
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -38,14 +44,14 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-    	// Create the basic team info table, with a name, opponent (id),  
-    	// sos numbers for each position (for sake of opponent lookup), 
-    	// and id as the key. For the sake of space, this should probably
-    	// be an independent map from the players
+        // Create the basic team info table, with a name, opponent (id),  
+        // sos numbers for each position (for sake of opponent lookup), 
+        // and id as the key. For the sake of space, this should probably
+        // be an independent map from the players
         String createTeamInfoTable = 
-        		"CREATE TABLE " + TEAM_INFO_TABLE + " " + 
+                "CREATE TABLE " + TEAM_INFO_TABLE + " " + 
                 "(" + 
-        		"ID             INTEGER    PRIMARY KEY," +
+                "ID             INTEGER    PRIMARY KEY," +
                 "NAME           TEXT       NOT NULL," +
                 "OPPONENT       INTEGER    NOT NULL," +
                 "QB_SOS         INTEGER    NOT NULL," + 
@@ -60,22 +66,22 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
         // Create the basic player info table, with a name, team id, position, 
         // age, and id as the key
         String createPlayerBasicInfoTable = 
-        		"CREATE TABLE " + PLAYER_BASIC_INFO_TABLE + " " +
+                "CREATE TABLE " + PLAYER_BASIC_INFO_TABLE + " " +
                 "(" + 
-        		"ID             INTEGER   PRIMARY KEY," +
+                "ID             INTEGER   PRIMARY KEY," +
                 "NAME           TEXT      NOT NULL" + 
-        		"POSITION       TEXT      NOT NULL" + 
+                "POSITION       TEXT      NOT NULL" + 
                 "TEAM_ID        INTEGER   NOT NULL" + 
-        		"AGE            INTEGER   NOT NULL" + 
-        		")";
+                "AGE            INTEGER   NOT NULL" + 
+                ")";
         db.execSQL(createPlayerBasicInfoTable);
         
         // Create the player stats table to keep track of the various values. 
         // As things are added, this will probs need updating.
         String createPlayerStatsTable = 
-        		"CREATE TABLE " + PLAYER_STATS_TABLE + " " + 
+                "CREATE TABLE " + PLAYER_STATS_TABLE + " " + 
                 "(" + 
-        		"ID             INTEGER    PRIMARY KEY," +
+                "ID             INTEGER    PRIMARY KEY," +
                 "ECR            INT        NOT NULL," +
                 "PROJECTION     INT        NOT NULL" +
                 ")";
@@ -105,4 +111,35 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + PLAYER_STATS_TABLE);
     }
     
+    /**
+     * A helper to load all teams into a map, to get (in constant time) 
+     * a team given a teamId. This should be independent of the players 
+     * structure, as each has a teamId and opponentId.
+     * 
+     * @return a map of all 32 team objects
+     */
+    public Map<Integer, Team> loadAllTeams(){
+        Map<Integer, Team> teams = new HashMap<Integer, Team>();
+        String selectQuery = "SELECT * FROM " + TEAM_INFO_TABLE;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int teamId = cursor.getInt(0);
+                String teamName = cursor.getString(1);
+                int opponentId = cursor.getInt(2);
+                int qbSos = cursor.getInt(3);
+                int rbSos = cursor.getInt(4);
+                int wrSos = cursor.getInt(5);
+                int teSos = cursor.getInt(6);
+                int defSos = cursor.getInt(7);
+                int kSos = cursor.getInt(8);
+                Team team = new Team(teamId, teamName, opponentId, qbSos, rbSos, 
+                        wrSos, teSos, defSos, kSos);
+                teams.put(teamId, team);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return teams;
+    }
 }
