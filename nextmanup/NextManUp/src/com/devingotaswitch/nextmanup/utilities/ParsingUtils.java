@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class PlayerUtils {
+public class ParsingUtils {
 	
 	private static Map<String, String> teams;
 	
