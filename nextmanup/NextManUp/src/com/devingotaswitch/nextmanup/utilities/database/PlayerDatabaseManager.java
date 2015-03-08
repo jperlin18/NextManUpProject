@@ -1,8 +1,12 @@
 package com.devingotaswitch.nextmanup.utilities.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.devingotaswitch.nextmanup.specifics.Player;
+import com.devingotaswitch.nextmanup.specifics.PlayerRankings;
 import com.devingotaswitch.nextmanup.specifics.Team;
 
 import android.content.Context;
@@ -136,5 +140,39 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		return teams;
+	}
+	
+	/**
+	 * A helper to load all players and respective stats from the database.
+	 * It will handle the loading of the stats as well - the list of players 
+	 * it returns will be complete. 
+	 * 
+	 * Note - this will need updating as more stats are added.
+	 * 
+	 * @return a list of player objects with basic info and stats
+	 */
+	public List<Player> loadAllPlayers() {
+		List<Player> players = new ArrayList<Player>();
+		String selectQuery = "SELECT * FROM " + PLAYER_BASIC_INFO_TABLE + " " +  
+				"INNER JOIN " + PLAYER_STATS_TABLE + " " + 
+				"ON " + PLAYER_BASIC_INFO_TABLE + ".ID=" + PLAYER_STATS_TABLE + ".ID";
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		if (cursor.moveToFirst()) {
+			do {
+				int playerId = cursor.getInt(0);
+				String name = cursor.getString(1);
+				String position = cursor.getString(2);
+				int teamId = cursor.getInt(3);
+				int age = cursor.getInt(4);
+				int ecr = cursor.getInt(5);
+				int projection = cursor.getInt(6);
+				Player player = new Player(new PlayerRankings(playerId, ecr, projection), 
+						name, position, teamId, playerId, age);
+				players.add(player);
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		return players;
 	}
 }
