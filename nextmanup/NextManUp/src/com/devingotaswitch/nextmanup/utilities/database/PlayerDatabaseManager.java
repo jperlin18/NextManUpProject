@@ -8,15 +8,19 @@ import java.util.Map;
 import com.devingotaswitch.nextmanup.specifics.Player;
 import com.devingotaswitch.nextmanup.specifics.PlayerRankings;
 import com.devingotaswitch.nextmanup.specifics.Team;
+import com.devingotaswitch.nextmanup.utilities.Positions;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class PlayerDatabaseManager extends SQLiteOpenHelper {
 
 	// Database Version (incrementing will trigger onUpgrade)
+	// V1: initial work
 	private static final int DATABASE_VERSION = 1;
 
 	// Database Name
@@ -108,6 +112,67 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + TEAM_INFO_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + PLAYER_BASIC_INFO_TABLE);
 		db.execSQL("DROP TABLE IF EXISTS " + PLAYER_STATS_TABLE);
+	}
+	
+	/**
+	 * Saves all of the teams to the database, to be used in case of 
+	 * initial fetching or mass update
+	 * 
+	 * @param teams the list of teams to save
+	 */
+	public void saveTeams(List<Team> teams){
+		SQLiteDatabase db = this.getWritableDatabase();
+		try {
+			db.beginTransaction();
+			for(Team team : teams){
+				ContentValues values = new ContentValues();
+				values.put("ID", team.getTeamId());
+				values.put("NAME", team.getTeamName());
+				values.put("OPPONENT", team.getOpponentId());
+				Map<String, Integer> sos = team.getSosMap();
+				values.put("QB_SOS", sos.get(Positions.QUARTERBACK));
+				values.put("RB_SOS", sos.get(Positions.RUNNING_BACK));
+				values.put("WR_SOS", sos.get(Positions.WIDE_RECEIVER));
+				values.put("TE_SOS", sos.get(Positions.TIGHT_END));
+				values.put("DEF_SOS", sos.get(Positions.DEFENSE));
+				values.put("K_SOS", sos.get(Positions.KICKER));
+				db.insert(TEAM_INFO_TABLE, null, values);
+			}
+    	} catch (SQLException e) {}
+    	finally{
+    		db.endTransaction();
+    	}
+	}
+	
+	/**
+	 * Saves all of the player info to the player info table and stats to the 
+	 * stats table, to be used in case of initial fetch or mass update
+	 * 
+	 * @param players the players to save to the database
+	 */
+	public void savePlayer(List<Player> players){
+		SQLiteDatabase db = this.getWritableDatabase();
+		try {
+			db.beginTransaction();
+			for(Player player : players){
+				ContentValues playerValues = new ContentValues();
+				ContentValues statsValues = new ContentValues();
+				playerValues.put("ID", player.getPlayerId());
+				playerValues.put("NAME", player.getName());
+				playerValues.put("POSITION", player.getPosition());
+				playerValues.put("TEAM_ID", player.getTeamId());
+				playerValues.put("AGE", player.getAge());
+				PlayerRankings stats = player.getRankings();
+				statsValues.put("ID", player.getPlayerId());
+				statsValues.put("ECR", stats.getEcr());
+				statsValues.put("PROJECTION", stats.getProjection());
+				db.insert(PLAYER_BASIC_INFO_TABLE, null, playerValues);
+				db.insert(PLAYER_STATS_TABLE, null, statsValues);
+			}
+    	} catch (SQLException e) {}
+    	finally{
+    		db.endTransaction();
+    	}
 	}
 
 	/**
