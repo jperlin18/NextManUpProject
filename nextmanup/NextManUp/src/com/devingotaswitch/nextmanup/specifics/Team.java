@@ -3,7 +3,7 @@ package com.devingotaswitch.nextmanup.specifics;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.devingotaswitch.nextmanup.utilities.Positions;
+import com.devingotaswitch.nextmanup.utilities.Constants;
 
 /**
  * Team objects have some basic team info (name, id of opponent, and 
@@ -27,12 +27,12 @@ public class Team {
 		this.opponentId = opponentId;
 		
 		this.sosMap = new HashMap<String, Integer>();
-		this.sosMap.put(Positions.QUARTERBACK, qbSos);
-		this.sosMap.put(Positions.RUNNING_BACK, rbSos);
-		this.sosMap.put(Positions.WIDE_RECEIVER, wrSos);
-		this.sosMap.put(Positions.TIGHT_END, teSos);
-		this.sosMap.put(Positions.DEFENSE, defSos);
-		this.sosMap.put(Positions.KICKER, kSos);
+		this.sosMap.put(Constants.QUARTERBACK, qbSos);
+		this.sosMap.put(Constants.RUNNING_BACK, rbSos);
+		this.sosMap.put(Constants.WIDE_RECEIVER, wrSos);
+		this.sosMap.put(Constants.TIGHT_END, teSos);
+		this.sosMap.put(Constants.DEFENSE, defSos);
+		this.sosMap.put(Constants.KICKER, kSos);
 	}
 	
 	public int getTeamId(){

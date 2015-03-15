@@ -10,7 +10,7 @@ import java.util.Set;
 import com.devingotaswitch.nextmanup.specifics.Player;
 import com.devingotaswitch.nextmanup.specifics.PlayerRankings;
 import com.devingotaswitch.nextmanup.specifics.Team;
-import com.devingotaswitch.nextmanup.utilities.Positions;
+import com.devingotaswitch.nextmanup.utilities.Constants;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -137,12 +137,12 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 				values.put("NAME", team.getTeamName());
 				values.put("OPPONENT", team.getOpponentId());
 				Map<String, Integer> sos = team.getSosMap();
-				values.put("QB_SOS", sos.get(Positions.QUARTERBACK));
-				values.put("RB_SOS", sos.get(Positions.RUNNING_BACK));
-				values.put("WR_SOS", sos.get(Positions.WIDE_RECEIVER));
-				values.put("TE_SOS", sos.get(Positions.TIGHT_END));
-				values.put("DEF_SOS", sos.get(Positions.DEFENSE));
-				values.put("K_SOS", sos.get(Positions.KICKER));
+				values.put("QB_SOS", sos.get(Constants.QUARTERBACK));
+				values.put("RB_SOS", sos.get(Constants.RUNNING_BACK));
+				values.put("WR_SOS", sos.get(Constants.WIDE_RECEIVER));
+				values.put("TE_SOS", sos.get(Constants.TIGHT_END));
+				values.put("DEF_SOS", sos.get(Constants.DEFENSE));
+				values.put("K_SOS", sos.get(Constants.KICKER));
 				db.insert(TEAM_INFO_TABLE, null, values);
 			}
     	} catch (SQLException e) {}
@@ -173,12 +173,12 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 		values.put("NAME", team.getTeamName());
 		values.put("OPPONENT", team.getOpponentId());
 		Map<String, Integer> sos = team.getSosMap();
-		values.put("QB_SOS", sos.get(Positions.QUARTERBACK));
-		values.put("RB_SOS", sos.get(Positions.RUNNING_BACK));
-		values.put("WR_SOS", sos.get(Positions.WIDE_RECEIVER));
-		values.put("TE_SOS", sos.get(Positions.TIGHT_END));
-		values.put("DEF_SOS", sos.get(Positions.DEFENSE));
-		values.put("K_SOS", sos.get(Positions.KICKER));
+		values.put("QB_SOS", sos.get(Constants.QUARTERBACK));
+		values.put("RB_SOS", sos.get(Constants.RUNNING_BACK));
+		values.put("WR_SOS", sos.get(Constants.WIDE_RECEIVER));
+		values.put("TE_SOS", sos.get(Constants.TIGHT_END));
+		values.put("DEF_SOS", sos.get(Constants.DEFENSE));
+		values.put("K_SOS", sos.get(Constants.KICKER));
 		return values;
 	}
 	

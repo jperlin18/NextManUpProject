@@ -5,7 +5,7 @@ package com.devingotaswitch.nextmanup.utilities;
  * future formatting changes won't need changing in more 
  * than one place.
  */
-public class Positions {
+public class Constants {
 	public static final String QUARTERBACK = "QB";
 	public static final String RUNNING_BACK = "RB";
 	public static final String WIDE_RECEIVER = "WR";
