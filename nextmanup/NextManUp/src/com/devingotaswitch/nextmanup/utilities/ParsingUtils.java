@@ -25,68 +25,68 @@ public class ParsingUtils {
 	private static void handleHashes()
 	{
 		teams.clear();
-		teams.put("cin", "Cincinnati Bengals");
-		teams.put("cincinnati", "Cincinnati Bengals");
-		teams.put("bengals", "Cincinnati Bengals");
-		teams.put("pit", "Pittsburgh Steelers");
-		teams.put("pittsburgh", "Pittsburgh Steelers");
-		teams.put("steelers", "Pittsburgh Steelers");
-		teams.put("cle", "Cleveland Browns");
-		teams.put("clv", "Cleveland Browns");
-		teams.put("cleveland", "Cleveland Browns");
-		teams.put("browns", "Cleveland Browns");
-		teams.put("bal", "Baltimore Ravens");
-		teams.put("blt", "Baltimore Ravens");
-		teams.put("baltimore", "Baltimore Ravens");
-		teams.put("ravens", "Baltimore Ravens");
-		teams.put("mia", "Miami Dolphins"); 
-		teams.put("miami", "Miami Dolphins");
-		teams.put("dolphins", "Miami Dolphins");
-		teams.put("nwe", "New England Patriots");
-		teams.put("ne", "New England Patriots");
-		teams.put("nep", "New England Patriots");
-		teams.put("new england", "New England Patriots");
-		teams.put("england", "New England Patriots");
-		teams.put("patriots", "New England Patriots");
-		teams.put("pats", "New England Patriots");
-		teams.put("nyj", "New York Jets");
-		teams.put("jets", "New York Jets");
-		teams.put("ny jets", "New York Jets");
-		teams.put("n.y. jets", "New York Jets");
-		teams.put("buf", "Buffalo Bills");
-		teams.put("buffalo", "Buffalo Bills");
-		teams.put("bills", "Buffalo Bills");
-		teams.put("ind", "Indianapolis Colts");
-		teams.put("indianapolis", "Indianapolis Colts");
-		teams.put("colts", "Indianapolis Colts");
-		teams.put("jac", "Jacksonville Jaguars");
-		teams.put(" jac", "Jacksonville Jaguars");
-		teams.put("jac ", "Jacksonville Jaguars");
-		teams.put("jax", "Jacksonville Jaguars");
-		teams.put("jacksonville", "Jacksonville Jaguars");
-		teams.put("jaguars", "Jacksonville Jaguars");
-		teams.put("hou", "Houston Texans");
-		teams.put("houston", "Houston Texans");
-		teams.put("hst", "Houston Texans");
-		teams.put("texans", "Houston Texans");
-		teams.put("ten", "Tennessee Titans");
-		teams.put("tennessee", "Tennessee Titans");
-		teams.put("titans", "Tennessee Titans");
-		teams.put("kc", "Kansas City Chiefs");
-		teams.put("kcc", "Kansas City Chiefs");
-		teams.put("kansas", "Kansas City Chiefs");
-		teams.put("kansas city", "Kansas City Chiefs");
-		teams.put("chiefs", "Kansas City Chiefs");
-		teams.put("oak", "Oakland Raiders");
-		teams.put("oakland", "Oakland Raiders");
-		teams.put("raiders", "Oakland Raiders");
-		teams.put("den", "Denver Broncos");
-		teams.put("denver", "Denver Broncos");
-		teams.put("broncos", "Denver Broncos");
-		teams.put("sd", "San Diego Chargers");
-		teams.put("sdc", "San Diego Chargers");
-		teams.put("san diego", "San Diego Chargers");
-		teams.put("chargers", "San Diego Chargers");
+		teams.put("cin", Constants.BENGALS);
+		teams.put("cincinnati", Constants.BENGALS);
+		teams.put("bengals", Constants.BENGALS);
+		teams.put("pit", Constants.STEELERS);
+		teams.put("pittsburgh", Constants.STEELERS);
+		teams.put("steelers", Constants.STEELERS);
+		teams.put("cle", Constants.BROWNS);
+		teams.put("clv", Constants.BROWNS);
+		teams.put("cleveland", Constants.BROWNS);
+		teams.put("browns", Constants.BROWNS);
+		teams.put("bal", Constants.RAVENS);
+		teams.put("blt", Constants.RAVENS);
+		teams.put("baltimore", Constants.RAVENS);
+		teams.put("ravens", Constants.RAVENS);
+		teams.put("mia", Constants.DOLPHINS); 
+		teams.put("miami", Constants.DOLPHINS);
+		teams.put("dolphins", Constants.DOLPHINS);
+		teams.put("nwe", Constants.PATRIOTS);
+		teams.put("ne", Constants.PATRIOTS);
+		teams.put("nep", Constants.PATRIOTS);
+		teams.put("new england", Constants.PATRIOTS);
+		teams.put("england", Constants.PATRIOTS);
+		teams.put("patriots", Constants.PATRIOTS);
+		teams.put("pats", Constants.PATRIOTS);
+		teams.put("nyj", Constants.JETS);
+		teams.put("jets", Constants.JETS);
+		teams.put("ny jets", Constants.JETS);
+		teams.put("n.y. jets", Constants.JETS);
+		teams.put("buf", Constants.BILLS);
+		teams.put("buffalo", Constants.BILLS);
+		teams.put("bills", Constants.BILLS);
+		teams.put("ind", Constants.COLTS);
+		teams.put("indianapolis", Constants.COLTS);
+		teams.put("colts", Constants.COLTS);
+		teams.put("jac", Constants.JAGUARS);
+		teams.put(" jac", Constants.JAGUARS);
+		teams.put("jac ", Constants.JAGUARS);
+		teams.put("jax", Constants.JAGUARS);
+		teams.put("jacksonville", Constants.JAGUARS);
+		teams.put("jaguars", Constants.JAGUARS);
+		teams.put("hou", Constants.TEXANS);
+		teams.put("houston", Constants.TEXANS);
+		teams.put("hst", Constants.TEXANS);
+		teams.put("texans", Constants.TEXANS);
+		teams.put("ten", Constants.TITANS);
+		teams.put("tennessee", Constants.TITANS);
+		teams.put("titans", Constants.TITANS);
+		teams.put("kc", Constants.CHIEFS);
+		teams.put("kcc", Constants.CHIEFS);
+		teams.put("kansas", Constants.CHIEFS);
+		teams.put("kansas city", Constants.CHIEFS);
+		teams.put("chiefs", Constants.CHIEFS);
+		teams.put("oak", Constants.RAIDERS);
+		teams.put("oakland", Constants.RAIDERS);
+		teams.put("raiders", Constants.RAIDERS);
+		teams.put("den", Constants.BRONCOS);
+		teams.put("denver", Constants.BRONCOS);
+		teams.put("broncos", Constants.BRONCOS);
+		teams.put("sd", Constants.CHARGERS);
+		teams.put("sdc", Constants.CHARGERS);
+		teams.put("san diego", Constants.CHARGERS);
+		teams.put("chargers", Constants.CHARGERS);
 		teams.put("chi", "Chicago Bears");
 		teams.put("chicago", "Chicago Bears");
 		teams.put("bears", "Chicago Bears");
@@ -167,10 +167,10 @@ public class ParsingUtils {
 			return teams.get(low);
 		}
 		else if(low.contains("kansas")){
-			return "Kansas City Chiefs";
+			return Constants.CHIEFS;
 		}
 		else if(low.contains("diego")) {
-			return "San Diego Chargers";
+			return Constants.CHARGERS;
 		}
 		else if(low.contains("green")) { 
 			return "Green Bay Packers";
@@ -188,16 +188,16 @@ public class ParsingUtils {
 			return "San Francisco 49ers";
 		}
 		else if(low.contains("england")) {
-			return "New England Patriots";
+			return Constants.PATRIOTS;
 		}
 		else if(low.contains("nyj")) {
-			return "New York Jets";
+			return Constants.JETS;
 		}
 		else if(low.contains("tb")) {
 			return "Tampa Bay Buccaneers";
 		}
 		else if(low.contains("mia")) {
-			return "Miami Dolphins";
+			return Constants.DOLPHINS;
 		}
 		return team;
 	}
