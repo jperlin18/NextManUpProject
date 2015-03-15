@@ -12,6 +12,7 @@ import com.devingotaswitch.nextmanup.utilities.Positions;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,6 +26,10 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 
 	// Database Name
 	private static final String DATABASE_NAME = "PlayerData";
+	
+	// SharedPreferences Key
+	private final String SP_KEY = "bevin_is_a_ditch";
+	private final String WATCH_LIST_KEY = ".watchListed";
 
 	// Table names
 	private static final String TEAM_INFO_TABLE = "TEAM_INFO";
@@ -145,34 +150,104 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 	}
 	
 	/**
+	 * Saves a single team to the database, to be used in case of an 
+	 * update to a single team's information
+	 * @param team
+	 */
+	public void saveTeam(Team team){
+		SQLiteDatabase db = this.getWritableDatabase();
+		try {
+			db.beginTransaction();
+			db.insert(TEAM_INFO_TABLE, null, getTeamDataToSave(team));
+    	} catch (SQLException e) {}
+    	finally{
+    		db.endTransaction();
+    	}
+	}
+	
+	private ContentValues getTeamDataToSave(Team team){
+		ContentValues values = new ContentValues();
+		values.put("ID", team.getTeamId());
+		values.put("NAME", team.getTeamName());
+		values.put("OPPONENT", team.getOpponentId());
+		Map<String, Integer> sos = team.getSosMap();
+		values.put("QB_SOS", sos.get(Positions.QUARTERBACK));
+		values.put("RB_SOS", sos.get(Positions.RUNNING_BACK));
+		values.put("WR_SOS", sos.get(Positions.WIDE_RECEIVER));
+		values.put("TE_SOS", sos.get(Positions.TIGHT_END));
+		values.put("DEF_SOS", sos.get(Positions.DEFENSE));
+		values.put("K_SOS", sos.get(Positions.KICKER));
+		return values;
+	}
+	
+	/**
 	 * Saves all of the player info to the player info table and stats to the 
 	 * stats table, to be used in case of initial fetch or mass update
 	 * 
 	 * @param players the players to save to the database
 	 */
-	public void savePlayer(List<Player> players){
+	public void savePlayers(List<Player> players){
 		SQLiteDatabase db = this.getWritableDatabase();
 		try {
 			db.beginTransaction();
 			for(Player player : players){
-				ContentValues playerValues = new ContentValues();
-				ContentValues statsValues = new ContentValues();
-				playerValues.put("ID", player.getPlayerId());
-				playerValues.put("NAME", player.getName());
-				playerValues.put("POSITION", player.getPosition());
-				playerValues.put("TEAM_ID", player.getTeamId());
-				playerValues.put("AGE", player.getAge());
-				PlayerRankings stats = player.getRankings();
-				statsValues.put("ID", player.getPlayerId());
-				statsValues.put("ECR", stats.getEcr());
-				statsValues.put("PROJECTION", stats.getProjection());
-				db.insert(PLAYER_BASIC_INFO_TABLE, null, playerValues);
-				db.insert(PLAYER_STATS_TABLE, null, statsValues);
+				db.insert(PLAYER_BASIC_INFO_TABLE, null, getPlayerInfoToSave(player));
+				db.insert(PLAYER_STATS_TABLE, null, getPlayerStatsToSave(player));
 			}
     	} catch (SQLException e) {}
     	finally{
     		db.endTransaction();
     	}
+	}
+	/**
+	 * Saves all of the info for a single player to both the stats table 
+	 * and the player info table, to be used in case of a single update
+	 * 
+	 * @param player the player to update
+	 */
+	public void savePlayer(Player player){
+		SQLiteDatabase db = this.getWritableDatabase();
+		try {
+			db.beginTransaction();
+			db.insert(PLAYER_BASIC_INFO_TABLE, null, getPlayerInfoToSave(player));
+			db.insert(PLAYER_STATS_TABLE, null, getPlayerStatsToSave(player));
+    	} catch (SQLException e) {}
+    	finally{
+    		db.endTransaction();
+    	}
+	}
+	
+	/**
+	 * A helper to generate the ContentValues for player info to save to the database 
+	 * so saving for batches and saving for a single player isn't duplicated
+	 * 
+	 * @param player the player to get the content values for
+	 * @return the content values of the player info
+	 */
+	private ContentValues getPlayerInfoToSave(Player player){
+		ContentValues playerValues = new ContentValues();
+		playerValues.put("ID", player.getPlayerId());
+		playerValues.put("NAME", player.getName());
+		playerValues.put("POSITION", player.getPosition());
+		playerValues.put("TEAM_ID", player.getTeamId());
+		playerValues.put("AGE", player.getAge());
+		return playerValues;
+	}
+	
+	/**
+	 * A helper to generate the ContentValues for player stats to save to the database 
+	 * so saving for batches and saving for a single player isn't duplicated
+	 * 
+	 * @param player the player to get the content values for
+	 * @return the content values of the player info
+	 */
+	private ContentValues getPlayerStatsToSave(Player player){
+		ContentValues statsValues = new ContentValues();
+		PlayerRankings stats = player.getRankings();
+		statsValues.put("ID", player.getPlayerId());
+		statsValues.put("ECR", stats.getEcr());
+		statsValues.put("PROJECTION", stats.getProjection());
+		return statsValues;
 	}
 
 	/**
@@ -239,5 +314,44 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		return players;
+	}
+	
+	/**
+	 * A check from the preferences cache if a given player is watch listed
+	 * 
+	 * @param playerId the id to be checked
+	 * @return true if so, false if not
+	 */
+	public boolean isPlayerWatchListed(int playerId){
+		return getSP().contains(playerId + WATCH_LIST_KEY);
+	}
+	
+	/**
+	 * Adds the player to the watch list. If he was already there, no issues 
+	 * will arise. 
+	 * 
+	 * @param playerId the id of the player to add to the watch list
+	 */
+	public void addPlayerToWatchList(int playerId){
+		getSP().edit().putBoolean(playerId + WATCH_LIST_KEY, true).apply();
+	}
+	
+	/**
+	 * Removes the player from the watch list. If he was not in it, no issues 
+	 * will arise.
+	 * 
+	 * @param playerId the id of the player to remove from the watch list
+	 */
+	public void removePlayerFromWatchList(int playerId){
+		getSP().edit().remove(playerId + WATCH_LIST_KEY).apply();
+	}
+	
+	/**
+	 * Grab the applications shared preferences
+	 * 
+	 * @return the sharedpreferences, keyed by devin's sucking nature
+	 */
+	private SharedPreferences getSP(){
+		return context.getSharedPreferences(SP_KEY, Context.MODE_PRIVATE);
 	}
 }
