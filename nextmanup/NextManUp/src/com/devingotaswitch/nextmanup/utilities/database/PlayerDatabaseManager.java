@@ -2,8 +2,10 @@ package com.devingotaswitch.nextmanup.utilities.database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.devingotaswitch.nextmanup.specifics.Player;
 import com.devingotaswitch.nextmanup.specifics.PlayerRankings;
@@ -314,6 +316,23 @@ public class PlayerDatabaseManager extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		return players;
+	}
+	
+	/**
+	 * Gets all of the ids of players who are currently watch listed
+	 * 
+	 * @return a list of player ids who have been watch listed
+	 */
+	public List<Integer> getWatchListedPlayerIds(){
+		List<Integer> watchListedPlayerIds = new ArrayList<Integer>();
+		Set<String> keySet = getSP().getAll().keySet();
+		for(String key : keySet){
+			if(key.contains(WATCH_LIST_KEY)){
+				String idString = key.split(WATCH_LIST_KEY)[0];
+				watchListedPlayerIds.add(Integer.parseInt(idString));
+			}
+		}
+		return watchListedPlayerIds;
 	}
 	
 	/**
